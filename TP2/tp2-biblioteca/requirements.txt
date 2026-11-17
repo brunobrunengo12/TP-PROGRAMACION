@@ -1,0 +1,8 @@
+fastapi[standard]
+uvicorn
+sqlmodel
+email-validator==2.3.0
+
+# Testing
+pytest
+pytest-cov
