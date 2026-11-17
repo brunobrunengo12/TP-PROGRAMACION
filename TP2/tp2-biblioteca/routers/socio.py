@@ -1,6 +1,8 @@
-from typing import Annotated
+from typing import Annotated, Optional
 from fastapi import APIRouter, Query, status
+from models.prestamo import PrestamoRead
 from models.socio import SocioBase, SocioRead
+from services.prestamo import PrestamoServiceDep
 from services.socio import SocioServiceDep
 
 router = APIRouter(prefix="/socios", tags=["Socios"])
@@ -33,3 +35,12 @@ def update_socio(socio_id: int, datos: SocioBase, service: SocioServiceDep):
 @router.delete("/{socio_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_socio(socio_id: int, service: SocioServiceDep):
     service.delete_socio(socio_id)
+
+
+@router.get("/{socio_id}/prestamos", response_model=list[PrestamoRead])
+def get_prestamos_del_socio(
+    socio_id: int,
+    service: PrestamoServiceDep,
+    activos: Optional[bool] = None,
+):
+    return service.listar_prestamos(socio_id, activos)

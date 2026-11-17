@@ -7,7 +7,7 @@ from models.libro import Libro  # noqa: F401
 from models.libro_autor import LibroAutor  # noqa: F401
 from models.socio import Socio  # noqa: F401
 from models.prestamo import Prestamo  # noqa: F401
-from routers import autor, libro, socio
+from routers import autor, libro, prestamo, socio
 
 
 @asynccontextmanager
@@ -21,6 +21,7 @@ app = FastAPI(title="API Biblioteca", lifespan=lifespan)
 app.include_router(autor.router)
 app.include_router(libro.router)
 app.include_router(socio.router)
+app.include_router(prestamo.router)
 
 
 @app.get("/")
