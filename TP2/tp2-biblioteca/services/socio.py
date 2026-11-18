@@ -22,12 +22,12 @@ class SocioService:
     def get_socio(self, socio_id: int) -> Socio:
         socio = self.session.get(Socio, socio_id)
         if not socio:
-            raise HTTPException(status_code=404, detail="Socio no encontrado.")  # Regla 7
+            raise HTTPException(status_code=404, detail="Socio no encontrado.")  
         return socio
 
     def create_socio(self, datos: SocioBase) -> Socio:
         if self.get_by_email(datos.email):
-            raise HTTPException(status_code=409, detail="El email ya está registrado.")  # Regla 8
+            raise HTTPException(status_code=409, detail="El email ya está registrado.")  
         nuevo_socio = Socio(
             nombre=datos.nombre,
             email=datos.email,
@@ -41,7 +41,7 @@ class SocioService:
     def update_socio(self, socio_id: int, datos: SocioBase) -> Socio:
         socio = self.get_socio(socio_id)
         if socio.email != datos.email and self.get_by_email(datos.email):
-            raise HTTPException(status_code=409, detail="El email ya está registrado.")  # Regla 8
+            raise HTTPException(status_code=409, detail="El email ya está registrado.")  
         socio.nombre = datos.nombre
         socio.email = datos.email
         socio.activo = datos.activo
