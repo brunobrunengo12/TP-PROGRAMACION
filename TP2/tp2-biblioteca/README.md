@@ -1,47 +1,3 @@
-# TP1 - API REST con FastAPI (Usuarios y Libros)
-
-API REST desarrollada con FastAPI y Pydantic como extensión de la primera clase práctica. Gestiona recursos en memoria con soporte para operaciones CRUD, filtros por parámetros de consulta y manejo de errores HTTP.
-
-## Estructura
-
-```text
-TP1/
-└── clase-fastapi/
-    ├── main.py              # instancia la app de FastAPI y registra los routers
-    ├── app/
-    │   ├── models/          # modelos Pydantic de entrada y esquemas de respuesta
-    │   └── routers/         # endpoints y lógica de manejo en memoria
-    └── requirements.txt     # dependencias del proyecto
-```
-
-## Cómo correrlo
-
-Todos los comandos se ejecutan desde la carpeta `TP1/clase-fastapi`.
-
-Crear y activar el entorno virtual:
-
-```powershell
-# Windows (PowerShell)
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-```
-
-Instalar las dependencias:
-
-```powershell
-pip install -r requirements.txt
-```
-
-Levantar el servidor de desarrollo:
-
-```powershell
-fastapi dev main.py
-```
-
-La API queda disponible en `http://127.0.0.1:8000` y la documentación interactiva (Swagger UI) en `http://127.0.0.1:8000/docs`.
-
----
-
 # TP2 - Sistema de Biblioteca (FastAPI + SQLModel)
 
 API REST para gestionar el catálogo de una biblioteca (autores, libros y socios) y sus préstamos.
@@ -49,15 +5,14 @@ API REST para gestionar el catálogo de una biblioteca (autores, libros y socios
 ## Estructura
 
 ```text
-TP2/
-└── tp2-biblioteca/
-    ├── main.py            # crea la app y registra los routers
-    ├── database.py        # conexión SQLite, creación de tablas y sesión (SessionDep)
-    ├── models/            # tablas SQLModel y esquemas: Autor, Libro, LibroAutor, Socio, Prestamo
-    ├── routers/           # endpoints: solo traducen HTTP, no tienen reglas
-    ├── services/          # reglas de negocio (las 8 del enunciado) y consultas a la base
-    ├── tests/             # pytest con base en memoria
-    └── requirements.txt   # dependencias del proyecto
+tp2-biblioteca/
+├── main.py            # crea la app y registra los routers
+├── database.py        # conexión SQLite, creación de tablas y sesión (SessionDep)
+├── models/            # tablas SQLModel y esquemas: Autor, Libro, LibroAutor, Socio, Prestamo
+├── routers/           # endpoints: solo traducen HTTP, no tienen reglas
+├── services/          # reglas de negocio (las 8 del enunciado) y consultas a la base
+├── tests/             # pytest con base en memoria
+└── requirements.txt   # dependencias del proyecto
 ```
 
 Cada pedido recorre las capas así: **router → service → base de datos**.
