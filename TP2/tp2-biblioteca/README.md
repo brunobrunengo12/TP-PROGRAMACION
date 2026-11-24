@@ -10,14 +10,16 @@ tp2-biblioteca/
 ├── database.py        # conexión SQLite, creación de tablas y sesión (SessionDep)
 ├── models/            # tablas SQLModel y esquemas: Autor, Libro, LibroAutor, Socio, Prestamo
 ├── routers/           # endpoints: solo traducen HTTP, no tienen reglas
-├── services/          # reglas de negocio (las 8 del enunciado) y consultas a la base
+├── services/          # reglas de negocio (las 8 del enunciado) y manejo de errores HTTP
+├── repositories/      # capa de acceso a datos: consultas y operaciones sobre la base
 ├── tests/             # pytest con base en memoria
 └── requirements.txt   # dependencias del proyecto
 ```
 
-Cada pedido recorre las capas así: **router → service → base de datos**.
+Cada pedido recorre las capas así: **router → service → repository → base de datos**.
 - El **router** recibe el pedido HTTP y devuelve la respuesta.
-- El **service** aplica las reglas de negocio, consulta la base de datos y decide los errores (`404`, `403`, `409`).
+- El **service** aplica las reglas de negocio y decide los errores (`404`, `403`, `409`).
+- El **repository** es el único que consulta y guarda en la base de datos.
 
 ## Cómo correrlo
 

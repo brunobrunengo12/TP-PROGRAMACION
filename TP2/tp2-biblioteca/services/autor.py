@@ -1,45 +1,33 @@
 from collections.abc import Sequence
 from typing import Annotated
 from fastapi import Depends, HTTPException
-from sqlmodel import select
-from database import SessionDep
 from models.autor import Autor, AutorBase
+from repositories.autor import AutorRepository
 
 
 class AutorService:
-    def __init__(self, session: SessionDep):
-        self.session = session
+    def __init__(self, repo: Annotated[AutorRepository, Depends()]):
+        self.repo = repo
 
     def get_autores(self, offset: int = 0, limit: int = 100) -> Sequence[Autor]:
-        query = select(Autor).offset(offset).limit(limit)
-        return self.session.exec(query).all()
+        return self.repo.fetch_autores(offset, limit)
 
     def get_autor(self, autor_id: int) -> Autor:
-        autor = self.session.get(Autor, autor_id)
+        autor = self.repo.get_by_id(autor_id)
         if not autor:
-            raise HTTPException(status_code=404, detail="Autor no encontrado.")  # Regla 7
+            raise HTTPException(status_code=404, detail="Autor no encontrado.")
         return autor
 
     def create_autor(self, datos: AutorBase) -> Autor:
-        nuevo_autor = Autor(nombre=datos.nombre, nacionalidad=datos.nacionalidad)
-        self.session.add(nuevo_autor)
-        self.session.commit()
-        self.session.refresh(nuevo_autor)
-        return nuevo_autor
+        return self.repo.create_autor(datos)
 
     def update_autor(self, autor_id: int, datos: AutorBase) -> Autor:
         autor = self.get_autor(autor_id)
-        autor.nombre = datos.nombre
-        autor.nacionalidad = datos.nacionalidad
-        self.session.add(autor)
-        self.session.commit()
-        self.session.refresh(autor)
-        return autor
+        return self.repo.update_autor(autor, datos)
 
     def delete_autor(self, autor_id: int) -> None:
         autor = self.get_autor(autor_id)
-        self.session.delete(autor)
-        self.session.commit()
+        self.repo.delete_autor(autor)
 
 
 AutorServiceDep = Annotated[AutorService, Depends()]
